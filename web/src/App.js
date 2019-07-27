@@ -16,7 +16,7 @@ function App() {
           <img src={logo} className="App-logo" alt="logo" />
           <div className={s.content}> */}
             <Switch>
-              <Route exact path="/" component={Start} />
+              <Route exact path="/" component={RegistrationForm} />
               {/* <Route exact path="/step" component={Step} /> */}
               <Route component={NotFound} />
 
