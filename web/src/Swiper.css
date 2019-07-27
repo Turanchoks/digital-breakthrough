@@ -115,6 +115,11 @@ h5:last-of-type {
   color: #fff;
   flex-direction: column;
   z-index: 9999;
+  animation: fadein .3s;
+}
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .splash__result {

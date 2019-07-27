@@ -45,12 +45,13 @@ function Swiper({ cards }) {
 
       if (!down && trigger && xDir !== 0) {
         resultsRef.current[index] = dir === 1;
-        setShowSplash({
+        setTimeout(() => setShowSplash({
           show: resultsRef.current[index] === cards[index].correct
             ? 'correct'
             : 'wrong',
           index,
-        });
+        }),
+        200);
       }
 
       set(i => {
