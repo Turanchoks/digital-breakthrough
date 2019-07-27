@@ -4,6 +4,8 @@ import logo from './logo.svg';
 import Start from './pages/start';
 import NotFound from './pages/not-found';
 import s from './App.css';
+import { RegistrationForm } from "./RegistrationForm";
+import 'semantic-ui-css/semantic.min.css'
 
 function App() {
 
