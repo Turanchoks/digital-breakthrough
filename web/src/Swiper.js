@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { withRouter } from "react-router-dom";
 import {
   useSprings,
   animated,
@@ -19,7 +20,7 @@ const from = i => ({ rot: 0, scale: 1.5, y: -1000 });
 
 const trans = (r, s) => `rotate(${r / 2}deg)`;
 
-function Swiper({ cards }) {
+function Swiper({ cards, history }) {
   // const [results, setResults] = useState();
   const resultsRef = useRef({});
   // const responseGinenRef = useRef(false);
@@ -73,6 +74,11 @@ function Swiper({ cards }) {
       });
     }
   );
+
+  // all cards are gone, go to next task
+  if (cards.length === Object.keys(resultsRef.current).length && !splash.show) {
+    history.push('/messenger-splash');
+  }
 
   return (
     <animated.div
@@ -141,4 +147,4 @@ function Swiper({ cards }) {
   );
 }
 
-export default Swiper;
+export default withRouter(Swiper);
