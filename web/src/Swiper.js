@@ -1,5 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { useSprings, animated, interpolate, useSpring } from 'react-spring';
+import {
+  useSprings,
+  animated,
+  interpolate,
+  useSpring,
+} from 'react-spring/hooks';
 import { useGesture } from 'react-with-gesture';
 import './Swiper.css';
 
@@ -12,8 +17,7 @@ const to = i => ({
 });
 const from = i => ({ rot: 0, scale: 1.5, y: -1000 });
 
-const trans = (r, s) =>
-  `rotate(${r/2}deg)`;
+const trans = (r, s) => `rotate(${r / 2}deg)`;
 
 function Swiper({ cards }) {
   // const [results, setResults] = useState();
@@ -48,8 +52,10 @@ function Swiper({ cards }) {
       if (!down && trigger) {
         resultsRef.current.push(dir === 1);
         const i = resultsRef.current.length - 1;
-        
-        setShowSplash(resultsRef.current[i] === cards[i].correct ? 'correct' : 'wrong');
+
+        setShowSplash(
+          resultsRef.current[i] === cards[i].correct ? 'correct' : 'wrong'
+        );
       }
 
       set(i => {
@@ -79,7 +85,7 @@ function Swiper({ cards }) {
 
         return (
           <div key={i}>
-            { splash && 
+            {splash && (
               <div className={`splash splash__${splash}`}>
                 <div className="splash__card">
                   <div className="splash__result">
@@ -89,8 +95,8 @@ function Swiper({ cards }) {
                   <h3>{resultText}</h3>
                   <p>{resultDescr}</p>
                 </div>
-              </div> 
-            }
+              </div>
+            )}
             <animated.div
               className="card__wrapper-wrapper"
               style={{
@@ -109,7 +115,7 @@ function Swiper({ cards }) {
               >
                 <div className="card">
                   <h2>{caseText}</h2>
-                  <img src={imageSrc}  width="100%" alt=""/>
+                  <img src={imageSrc} width="100%" alt="" />
                 </div>
               </animated.div>
             </animated.div>
