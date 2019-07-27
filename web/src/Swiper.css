@@ -10,7 +10,6 @@ body {
   height: 100%;
   width: 100%;
   user-select: none;
-  font-family: Raleway, sans-serif;
   position: fixed;
   overflow: hidden;
 }
@@ -145,12 +144,15 @@ h5:last-of-type {
 }
 
 .splash__next {
-  padding: 10px 40px;
+  padding: 14px 40px;
   background: #fff;
   border: 0;
-  color: #008282;
+  color: #06c6cb;
   font-size: 16px;
   border-radius: 10px;
+  font-weight: bold;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .swiper__left img,
@@ -180,6 +182,10 @@ h5:last-of-type {
 
 .splash__wrong {
   background: rgba(210, 64, 39, .94);
+}
+
+.splash__wrong .splash__next{
+  color: rgba(210, 64, 39, 1);
 }
 .splash__correct {
   background: rgba(0, 201, 200, .94);
