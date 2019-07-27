@@ -4,12 +4,19 @@
   "private": true,
   "dependencies": {
     "node-sass": "^4.12.0",
+    "axios": "^0.19.0",
+    "dotenv": "^8.0.0",
+    "http-proxy-middleware": "^0.19.1",
+    "js-sha1": "^0.6.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-spring": "^7.2.8",
-    "react-with-gesture": "^4.0.2"
+    "react-with-gesture": "^4.0.2",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.87.3",
+    "use-axios-request": "^0.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

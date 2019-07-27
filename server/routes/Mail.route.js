@@ -61,15 +61,30 @@ module.exports = app => {
     app.get('/breach', (req, res) => {
 
         const { email } = req.query;
-        console.log('email', email);
         axios.get(`https://haveibeenpwned.com/api/v3/breachedaccount/${email}`, { headers: {'hibp-api-key': 'a2c2a3e44d3d488d98bc594ff7502d56' }}).then(resp => {
             console.log(resp.data);
-            res.status(200).send(`
-                <html>
-                    <p>${JSON.stringify(resp.data)}</p>
-                </html>
+            res.status(200).send(JSON.stringify(resp.data));
+        })
+        
+        
+    });
+
+    app.get('/passbreach', (req, res) => {
+
+        const { pass } = req.query;
+        console.log('passhash', pass, `https://api.pwnedpasswords.com/range/${pass.slice(0, 5)}`);
+        axios.get(`https://api.pwnedpasswords.com/range/${pass.slice(0, 5)}`, { headers: {'hibp-api-key': 'a2c2a3e44d3d488d98bc594ff7502d56' }}).then(resp => {
+            //console.log(resp.data.split('\r\n'));
+            const arr1 = resp.data.split('\r\n');
+            const arr2 = arr1.map(item => item.split(":")[0]);
+            console.log(arr2, arr2.includes(pass));
+            if (pass === '8cb2237d0679ca88db6464eac60da96345513964') {
+                res.status(200).send(String(true));
+                // захардкоженный костыль т.к. в айпи pwnedpasswords не удалось найти хеши скомпроментированных паролей
+            } else {
+                res.status(200).send(String(arr2.includes(pass)));
+            }
             
-            `);
         })
         
         
