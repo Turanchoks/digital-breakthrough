@@ -6,6 +6,7 @@ import NotFound from './pages/not-found';
 import s from './App.css';
 import { RegistrationForm } from "./RegistrationForm";
 import Splash from "./Splash";
+import Results from "./Results";
 import 'semantic-ui-css/semantic.min.css'
 
 
@@ -47,6 +48,7 @@ function App() {
               <Route exact path="/swiper" component={() => <Start />} />
               <Route exact path="/messenger-splash" component={() => <Splash {...splashProps.messenger} />} />
               <Route exact path="/email-splash" component={() => <Splash {...splashProps.mail} />} />
+              <Route exact path="/results" component={() => <Results />} />
               <Route component={NotFound} />
 
             </Switch>

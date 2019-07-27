@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css?family=Alegreya+Sans&display=swap');
+
+.results {
+  background: #2c95ff;
+  min-height: 100vh;
+  padding: 40px 0;
+  width: 100%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  animation: fadein 0.6s;
+  font-size: 14px;
+}
+
+.results__inner {
+  width: 300px;
+  max-width: 300px;
+  text-align: center;
+  border-radius: 10px;
+  overflow: hidden;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 12.5px 100px -10px rgba(50, 50, 73, 0.4),
+  0 10px 10px -10px rgba(50, 50, 73, 0.3);
+}
+
+.results h2 {
+  margin-bottom: 40px;
+}
+
+.results__table {
+  background: #fff;
+  padding: 10px 20px;
+  color: #000;
+}
+
+.results__user {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f7f7f7;
+}
+
+.results__user-info {
+  display: flex;
+  margin: 0;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.results__user img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin: 0 20px;
+  border: 3px solid rgba(43, 149, 255, 0.25);
+}
+
+.results__user-place {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.results__user-name {
+  text-align: left;
+  padding-right: 10px;
+}
+
+.results__user-score {
+  font-size: 28px;
+  color: #2b95ff;
+  font-weight: bold;
+  font-family: 'Alegreya Sans', sans-serif;
+}
+
+.results__my {
+  min-height: 100px;
+  background: #004f9e;
+  padding: 30px 20px;
+  width: 100%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.results__my-score {
+  color: #fff;
+  font-size: 50px;
+  width: 33%;
+  text-align: center;
+  text-align: right;
+}
+
+.results__my-name {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: bold;
+  width: 33%;
+  text-align: left;
+}
+
+.results__my img {
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  margin: 0 20px 0 0;
+  border: 3px solid rgba(43, 149, 255, 0.25);
+}
