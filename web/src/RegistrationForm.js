@@ -1,6 +1,12 @@
 import * as React from "react";
 import axios from "axios";
 import {
+  useSprings,
+  animated,
+  interpolate,
+  useSpring
+} from "react-spring/hooks";
+import {
   Button,
   Checkbox,
   Form,
@@ -10,33 +16,18 @@ import {
   Image,
   Modal,
   Header,
-  Divider
+  Divider,
+  Segment,
+  Dimmer,
+  Loader
 } from "semantic-ui-react";
 import sha1 from "js-sha1";
 import avatar from "./images/nicecat.jpg";
 
 import "./RegForm.css";
 
-const BreachAccountData = [
-  {
-    Name: "Collection1"
-  },
-  {
-    Name: "ExploitIn"
-  },
-  {
-    Name: "KayoMoe"
-  },
-  {
-    Name: "NexusMods"
-  },
-  {
-    Name: "Tumblr"
-  },
-  {
-    Name: "XSplit"
-  }
-];
+const WARNING_COLOR = "rgba(210, 64, 39, .9)";
+const NORMAL_COLOR = "#2C95FF";
 
 const formReducer = (state, action) => {
   switch (action.type) {
@@ -70,7 +61,6 @@ const RegistrationFormStart = ({ submit }) => {
   });
   const { name, email, pass, check, rules, sha1Pass } = state;
   const isDisabledSubmit = !(name && email && pass && check);
-  console.log(state);
   // const { isFetching, error, data, update } = useAxiosRequest(`/api/hibp/breachedaccount/${email}`);
 
   return (
@@ -80,9 +70,16 @@ const RegistrationFormStart = ({ submit }) => {
         flexDirection: "column"
       }}
     >
-      <Image src={avatar} size="medium" circular />
+      <Image
+        src={avatar}
+        size="medium"
+        circular
+        style={{
+          margin: "0 auto",
+          paddingBottom: 20
+        }}
+      />
       <Form.Field>
-        <label>Имя</label>
         <input
           placeholder="Имя"
           onChange={e =>
@@ -92,7 +89,6 @@ const RegistrationFormStart = ({ submit }) => {
         />
       </Form.Field>
       <Form.Field>
-        <label>E-mail</label>
         <input
           placeholder="E-mail"
           onChange={e =>
@@ -102,7 +98,6 @@ const RegistrationFormStart = ({ submit }) => {
         />
       </Form.Field>
       <Form.Field>
-        <label>Пароль</label>
         <input
           placeholder="Пароль"
           onChange={e =>
@@ -114,7 +109,7 @@ const RegistrationFormStart = ({ submit }) => {
       </Form.Field>
       <Form.Field>
         <Checkbox
-          label="Согласен на всё"
+          label="Согласен c правилами"
           checked={check}
           onClick={() => {
             dispatch({ type: "change check" });
@@ -140,7 +135,7 @@ const RegistrationFormStart = ({ submit }) => {
           <Modal.Header>Соглашение на всё</Modal.Header>
           <Modal.Content image>
             <Modal.Description>
-              <Header>Первое всё</Header>
+              <Header>Первое правило</Header>
               <Divider />
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
@@ -149,7 +144,7 @@ const RegistrationFormStart = ({ submit }) => {
                 dolorum odio harum. Deleniti?
               </p>
               <Divider />
-              <Header>Второе всё</Header>
+              <Header>Второе правило</Header>
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                 Aperiam, mollitia iusto tempore atque nobis quam, vitae nisi,
@@ -183,14 +178,14 @@ const RegistrationFormStart = ({ submit }) => {
                 dispatch({ type: "change rules" });
               }}
             >
-              Прочитал и согласен <Icon name="right chevron" />
+              Прочитал(а) и согласен(на) <Icon name="right chevron" />
             </Button>
           </Modal.Actions>
         </Modal>
       </Form.Field>
       <Button
         type="submit"
-        disabled={isDisabledSubmit}
+        // disabled={isDisabledSubmit}
         onClick={() => {
           submit(state);
         }}
@@ -203,15 +198,58 @@ const RegistrationFormStart = ({ submit }) => {
 };
 
 const RegistrationFormEnd = props => {
+  const emailBreached = true;
+  const passLeaked = true;
+  const rulesNotRead = !props.rules;
+  console.log(props);
   return (
-    <List>
-      {props.hacks && (
-        <List.Item>
-          <Icon name="exclamation circle" color="red" />
-          Apples
-        </List.Item>
-      )}
-    </List>
+    <div
+      style={{
+        width: 300,
+        display: "flex",
+        flexDirection: "column"
+      }}
+    >
+      <Image
+        src={avatar}
+        size="medium"
+        circular
+        style={{
+          margin: "0 auto",
+          paddingBottom: 20
+        }}
+      />
+      <List>
+        {(emailBreached || passLeaked) && (
+          <List.Item>
+            <List.Icon name="exclamation circle" color="red" />
+            <List.Content>
+              Согласно{" "}
+              <a href="https://haveibeenpwned.com">haveibeenpwned.com</a> ваши
+              авторизационные данные находятся в публичном доступе
+            </List.Content>
+          </List.Item>
+        )}
+        {rulesNotRead && (
+          <List.Item>
+            <List.Icon name="exclamation circle" color="red" />
+            <List.Content>
+              Вы согласились с правилами, которые не прочитали
+            </List.Content>
+          </List.Item>
+        )}
+      </List>
+      <Button
+        type="submit"
+        onClick={() => {
+          console.log("dalee");
+          props.goBack();
+        }}
+        positive
+      >
+        Далее
+      </Button>
+    </div>
   );
 };
 // `/api/hibp/breachedaccount/${email}`
@@ -222,27 +260,65 @@ export const RegistrationForm = () => {
   const [endProps, setEndProps] = React.useState(null);
   const submit = async state => {
     setIsFetching(true);
-    console.log('checks 0', state)
+    console.log("checks 0", state);
     const checks = await Promise.all([
-       axios.post(`http://localhost:9000/register`, { ...state, pass: state.sha1Pass }),
-       axios.get(`http://localhost:9000/breach?email=${state.email}`),
-       axios.get(`http://localhost:9000/passbreach?pass=${state.sha1Pass}`)
-     ])
-    console.log('checks', checks)
+      axios.post(`http://localhost:9000/register`, {
+        ...state,
+        pass: state.sha1Pass
+      }),
+      axios.get(`http://localhost:9000/breach?email=${state.email}`),
+      axios.get(`http://localhost:9000/passbreach?pass=${state.sha1Pass}`)
+    ]);
+    setIsFetching(false);
+    console.log("checks", checks);
     setIsRegistered(true);
-    setEndProps(state);
+    setEndProps({
+      ...state
+      // emailCheck: checks[0].data,
+      // passCheck: checks[1].data
+    });
   };
+  const { transform, opacity } = useSpring({
+    opacity: isRegistered ? 1 : 0,
+    transform: `perspective(600px) rotateY(${isRegistered ? 180 : 0}deg)`,
+    config: { mass: 5, tension: 500, friction: 80 }
+  });
+  console.log(isRegistered);
   return (
-    <Card
+    <div
+      className="registration-wrapper"
       style={{
-        padding: "20px 30px"
+        backgroundColor: isRegistered ? WARNING_COLOR : NORMAL_COLOR
       }}
     >
       {!isRegistered ? (
-        <RegistrationFormStart submit={submit} />
+        <animated.div
+          className="registration-form__container"
+          style={{ opacity: opacity.interpolate(o => 1 - o), transform }}
+        >
+          <RegistrationFormStart submit={submit} />
+        </animated.div>
       ) : (
-        <RegistrationFormEnd {...endProps} />
+        <animated.div
+          className="registration-form__container"
+          style={{
+            opacity,
+            transform: transform.interpolate(t => `${t} rotateY(180deg)`)
+          }}
+        >
+          <RegistrationFormEnd
+            {...endProps}
+            goBack={() => setIsRegistered(false)}
+          />
+        </animated.div>
       )}
-    </Card>
+    </div>
   );
 };
+
+// isFetching ? (
+//   <Segment>
+//     <Dimmer active>
+//       <Loader />
+//     </Dimmer>
+//   </Segment>
