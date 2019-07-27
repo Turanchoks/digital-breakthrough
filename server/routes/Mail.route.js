@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const axios = require('axios');
-//const keys = require('../config/keys');
+const keys = require('../config/keys');
 const HTMLGenerator = require('./HTMLGenerator');
 const mailer = require('../utils/Mailer');
 
@@ -8,11 +8,15 @@ const mailer = require('../utils/Mailer');
 
 module.exports = app => {
 
-    app.post('/sendmail', (req, res) => {
+    app.post('/register', (req, res) => {
+        const { email, pass } = req.body;
+
+    });
+
+    /* app.post('/sendmail', (req, res) => {
 
         HTMLGenerator({ template: 'tinkoff_template', params: { name: "Дима", url: "http://localhost:9000/wrongclick" } }).then((html) => {
                const { email, name } = req.body;
-
 
                 let mailOptions = {
                     from: 'dmitry_malugin@hotmail.com', // sender address
@@ -35,6 +39,35 @@ module.exports = app => {
         })
 
       
+    }); */
+
+
+    /*
+    *
+    *
+    */
+    app.post('/sendmail', (req, res) => {
+        const { email, name, iswrong } = req.body;
+        console.log(email, name, iswrong);
+        HTMLGenerator({ template: 'tinkoff_template', params: { name: name, url: iswrong ? `http://${keys.domain}/wrongclick` : `http://${keys.domain}/wrightclick` } }).then((html) => {
+               
+                let mail = {
+                    mail: email,
+                    subject: `Пример письма для ${name}`, // Subject line
+                    body: html
+                };
+
+                mailer.sendMailOverMailGun(mail).then(info => {
+                    console.info(mail, info);
+                    res.status(200).send(`Message sent: %s ${JSON.stringify(info)}`);
+                }, error => {
+                    console.error(mail, error);
+                    res.status(500).send(`Error while sending to ${mail}: ${JSON.stringify(error)}`);
+                }, );
+        }, (error) =>{
+            console.log('error', JSON.stringify(error));
+        })
+
     });
 
     app.get('/rightclick', (req, res) => {

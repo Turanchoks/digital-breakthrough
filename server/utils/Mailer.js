@@ -1,9 +1,37 @@
 const nodemailer = require('nodemailer');
+const mailgunTransport = require('nodemailer-mailgun-transport')
 const keys = require('../config/keys');
 
 
 class Mailer {
-    
+
+    sendMailOverMailGun(mail) {
+
+        const mailgunOptions = {
+            auth: {
+              api_key: keys.mailgunPrivateApiKey,
+              domain: 'startup-club.tech',
+            }
+        }
+
+        const transport = mailgunTransport(mailgunOptions);
+        const mailGunClient = nodemailer.createTransport(transport);
+
+        return new Promise((resolve, reject) => {
+            mailGunClient.sendMail({
+              from: 'postmaster@startup-club.tech',
+              to: mail.mail,
+              subject: mail.subject,
+              html: mail.body
+            }, (err, info) => {
+              if (err) {
+                reject(err)
+              } else {
+                resolve(info)
+              }
+            })
+          }) 
+    }
 
     sendMailOverHotmail(mailOptions, errorCb, successCb) {
        
