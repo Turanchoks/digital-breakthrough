@@ -4,6 +4,8 @@ import logo from './logo.svg';
 import Start from './pages/start';
 import NotFound from './pages/not-found';
 import s from './App.css';
+import { RegistrationForm } from "./RegistrationForm";
+import 'semantic-ui-css/semantic.min.css'
 
 function App() {
 
@@ -14,7 +16,7 @@ function App() {
           <img src={logo} className="App-logo" alt="logo" />
           <div className={s.content}> */}
             <Switch>
-              <Route exact path="/" component={Start} />
+              <Route exact path="/" component={RegistrationForm} />
               {/* <Route exact path="/step" component={Step} /> */}
               <Route component={NotFound} />
 
