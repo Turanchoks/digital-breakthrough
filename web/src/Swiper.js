@@ -21,7 +21,7 @@ const trans = (r, s) => `rotate(${r / 2}deg)`;
 
 function Swiper({ cards }) {
   // const [results, setResults] = useState();
-  const resultsRef = useRef([]);
+  const resultsRef = useRef({});
   // const responseGinenRef = useRef(false);
   const [splash, setShowSplash] = useState(false);
 
@@ -29,12 +29,6 @@ function Swiper({ cards }) {
     ...to(i),
     from: from(i),
   }));
-
-  const [styleProps, setStyleProps] = useSpring(() => {
-    return {
-      backgroundColor: '#2C95FF',
-    };
-  });
 
   const bind = useGesture(
     ({
@@ -50,16 +44,18 @@ function Swiper({ cards }) {
       const dir = xDir < 0 ? -1 : 1;
 
       if (!down && trigger) {
-        resultsRef.current.push(dir === 1);
-        const i = resultsRef.current.length - 1;
+        resultsRef.current[index] = dir === 1;
 
         setShowSplash(
-          resultsRef.current[i] === cards[i].correct ? 'correct' : 'wrong'
+          resultsRef.current[index] === cards[index].correct
+            ? 'correct'
+            : 'wrong'
         );
       }
 
       set(i => {
         if (index !== i) return;
+        console.log(resultsRef.current);
         const isGone = resultsRef.current[index] != null;
 
         const x = isGone ? (200 + window.innerWidth) * dir : down ? xDelta : 0;
@@ -79,7 +75,12 @@ function Swiper({ cards }) {
   );
 
   return (
-    <animated.div className="swiper-wrapper" style={styleProps}>
+    <animated.div
+      className="swiper-wrapper"
+      style={{
+        backgroundColor: '#2C95FF',
+      }}
+    >
       {props.map(({ x, y, rot, scale }, i) => {
         const { caseText, imageSrc, resultText, resultDescr } = cards[i];
 
@@ -94,7 +95,10 @@ function Swiper({ cards }) {
                   </div>
                   <h3>{resultText}</h3>
                   <p>{resultDescr}</p>
-                  <button className="splash__next" onClick={() => setShowSplash(false)}>
+                  <button
+                    className="splash__next"
+                    onClick={() => setShowSplash(false)}
+                  >
                     Далее
                   </button>
                 </div>
