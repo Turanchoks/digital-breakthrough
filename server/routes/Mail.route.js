@@ -3,16 +3,15 @@ const nodemailer = require('nodemailer');
 const HTMLGenerator = require('./HTMLGenerator');
 const mailer = require('../utils/Mailer');
 
-console.log(HTMLGenerator);
+
 
 module.exports = app => {
 
     app.post('/sendmail', (req, res) => {
 
-        HTMLGenerator({ template: 'email_template', params: { name: "Дима", content: "test", _id: "123" } }).then((html) => {
-               const { subscribe, email, message, name } = req.body;
+        HTMLGenerator({ template: 'tinkoff_template', params: { name: "Дима", url: "http://localhost:9000/wrongclick" } }).then((html) => {
+               const { email, name } = req.body;
 
-                if (subscribe) mailer.subscribe(email, name);
 
                 let mailOptions = {
                     from: 'dmitry_malugin@hotmail.com', // sender address
@@ -28,13 +27,34 @@ module.exports = app => {
                     res.status(500).send('Error while sending mail: ' + error);
                 }, info => {
                     console.info(mailOptions, info);
-                    res.status(200).send(`Message sent: %s ${info}`);
+                    res.status(200).send(`Message sent: %s ${JSON.stringify(info)}`);
                 });
         }, (error) =>{
-            console.log('error');
+            console.log('error', JSON.stringify(error));
         })
 
       
+    });
+
+    app.get('/rightclick', (req, res) => {
+        res.status(200).send(`
+            <html>
+                <h1>Вы все сделали правильно! Ссылка безопасна!</h1>
+            </html>
+        `);
+       
+      
+    });
+
+    app.get('/wrongclick', (req, res) => {
+        res.status(200).send(`
+                <html>
+                    <h1>Вы только что перешли по вредоносной ссылке!</h1>
+                </html>
+            
+        `);
+        
+        
     });
 
 
