@@ -4,46 +4,62 @@ const keys = require('../config/keys');
 const HTMLGenerator = require('./HTMLGenerator');
 const mailer = require('../utils/Mailer');
 
+const userDao = require('./../dao/User.dao');
+
 
 
 module.exports = app => {
 
-    app.post('/register', (req, res) => {
-        const { email, pass } = req.body;
-
-    });
-
-    /* app.post('/sendmail', (req, res) => {
-
-        HTMLGenerator({ template: 'tinkoff_template', params: { name: "Дима", url: "http://localhost:9000/wrongclick" } }).then((html) => {
-               const { email, name } = req.body;
-
-                let mailOptions = {
-                    from: 'dmitry_malugin@hotmail.com', // sender address
-                    to: 'dmitry_malugin@hotmail.com', // list of receivers
-                    subject: `Fishing mail`, // Subject line
-                    // text: message, // plain text body
-                    html: html
-                    // attachments: attachments
-                };
-
-                mailer.sendMailOverHotmail(mailOptions, error => {
-                    console.error(mailOptions, error);
-                    res.status(500).send('Error while sending mail: ' + error);
-                }, info => {
-                    console.info(mailOptions, info);
-                    res.status(200).send(`Message sent: %s ${JSON.stringify(info)}`);
-                });
-        }, (error) =>{
-            console.log('error', JSON.stringify(error));
-        })
-
-      
-    }); */
-
 
     /*
+    * в теле запроса принимает JSON объект вида { "email": "RussianPsySoft@yandex.ru", "name": "Дмитрий", "pass": "12345" }
     *
+    */
+    app.post('/register', (req, res) => {
+        const { email, pass, name } = req.body;
+        userDao.saveUserIfNotExist({ email, pass, name }).then(result => {
+            console.info(result);
+            res.status(200).send(JSON.stringify(result.insertedIds["0"]));
+        }, error => {
+            res.status(500).send(`Error while saving ${email}: ${JSON.stringify(error)}`);
+        })
+    });
+
+    /*
+    * в теле запроса принимает JSON объект вида { id: "5d3cd9ff23fd6736ad99124c" }
+    *
+    */
+    app.post('/update/:id', (req, res) => {
+        const { id } = req.params;
+        userDao.updateUser(id).then(result => {
+            console.info(result);
+            res.status(200).send(JSON.stringify(result));
+        }, error => {
+            res.status(500).send(`Error while saving ${email}: ${JSON.stringify(error)}`);
+        })
+    });
+
+    app.get('/user/:id', (req, res) => {
+        const { id } = req.params;
+        userDao.getUser(id).then(result => {
+            console.info(result);
+            res.status(200).send(JSON.stringify(result));
+        }, error => {
+            res.status(500).send(`Error while getting ${id}: ${JSON.stringify(error)}`);
+        })
+    });
+
+    app.get('/users', (req, res) => {
+        userDao.getAllUsers().then(result => {
+            console.info(result);
+            res.status(200).send(JSON.stringify(result));
+        }, error => {
+            res.status(500).send(`Error while getting all users: ${JSON.stringify(error)}`);
+        })
+    });
+
+    /*
+    * в теле запроса принимает JSON объект вида { "email": "RussianPsySoft@yandex.ru", "name": "Дмитрий", "iswrong": false }
     *
     */
     app.post('/sendmail', (req, res) => {

@@ -1,11 +1,24 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const MongoClient = require('mongodb').MongoClient;
+const keys = require('./config/keys');
 
 
 
 const app = express();
 const port = process.env.PORT || 9000;
+const client = new MongoClient(keys.mongoURI);
+
+client.connect(function(err) {
+
+  if (err) {
+    console.error(err);
+  }
+
+  global.db = client.db('mongo');
+  console.log('succesfully connected to mongodb');
+});
 
 
 app.use(express.static(path.join(__dirname, 'public')));
