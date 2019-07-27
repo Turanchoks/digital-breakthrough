@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSprings, animated, interpolate, useSpring } from 'react-spring';
 import { useGesture } from 'react-with-gesture';
 import './Swiper.css';
@@ -13,15 +13,13 @@ const to = i => ({
 const from = i => ({ rot: 0, scale: 1.5, y: -1000 });
 
 const trans = (r, s) =>
-  `perspective(1500px) rotateX(30deg) rotateY(${r /
-    10}deg) rotateZ(${r}deg) scale(${s})`;
+  `rotate(${r/2}deg)`;
 
 function Swiper({ cards }) {
   // const [results, setResults] = useState();
   const resultsRef = useRef([]);
   // const responseGinenRef = useRef(false);
-
-  const [responseGiven, setResponseGiven] = useState(false);
+  const [splash, setShowSplash] = useState(false);
 
   const [props, set] = useSprings(cards.length, i => ({
     ...to(i),
@@ -30,24 +28,9 @@ function Swiper({ cards }) {
 
   const [styleProps, setStyleProps] = useSpring(() => {
     return {
-      backgroundColor: 'blue',
+      backgroundColor: '#2C95FF',
     };
   });
-
-  useEffect(() => {
-    if (responseGiven) {
-      const timeoutId = setTimeout(() => {
-        setResponseGiven(false);
-        setStyleProps({
-          backgroundColor: 'blue',
-        });
-      }, 1000);
-
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }
-  }, [responseGiven]);
 
   const bind = useGesture(
     ({
@@ -64,13 +47,9 @@ function Swiper({ cards }) {
 
       if (!down && trigger) {
         resultsRef.current.push(dir === 1);
-        setResponseGiven(true);
         const i = resultsRef.current.length - 1;
-
-        setStyleProps({
-          backgroundColor:
-            resultsRef.current[i] === cards[i].correct ? 'green' : 'red',
-        });
+        
+        setShowSplash(resultsRef.current[i] === cards[i].correct ? 'correct' : 'wrong');
       }
 
       set(i => {
@@ -96,32 +75,45 @@ function Swiper({ cards }) {
   return (
     <animated.div className="swiper-wrapper" style={styleProps}>
       {props.map(({ x, y, rot, scale }, i) => {
-        const { name, age, distance, text, pics } = cards[i];
+        const { caseText, imageSrc, resultText, resultDescr } = cards[i];
 
         return (
-          <animated.div
-            key={i}
-            style={{
-              transform: interpolate(
-                [x, y],
-                (x, y) => `translate3d(${x}px,${y}px,0)`
-              ),
-            }}
-          >
+          <div key={i}>
+            { splash && 
+              <div className={`splash splash__${splash}`}>
+                <div className="splash__card">
+                  <div className="splash__result">
+                    <img src={`/${splash}.png`} alt="" />
+                    <p>{splash === 'wrong' ? 'Неверно!' : 'Верно!'}</p>
+                  </div>
+                  <h3>{resultText}</h3>
+                  <p>{resultDescr}</p>
+                </div>
+              </div> 
+            }
             <animated.div
-              {...bind(i)}
+              className="card__wrapper-wrapper"
               style={{
-                transform: interpolate([rot, scale], trans),
+                transform: interpolate(
+                  [x, y],
+                  (x, y) => `translate3d(${x}px,${y}px,0)`
+                ),
               }}
             >
-              <div className="card">
-                <h2>{name},</h2>
-                <h2>{age}</h2>
-                <h5>{distance}</h5>
-                <h5>{text}</h5>
-              </div>
+              <animated.div
+                className="card__wrapper"
+                {...bind(i)}
+                style={{
+                  transform: interpolate([rot, scale], trans),
+                }}
+              >
+                <div className="card">
+                  <h2>{caseText}</h2>
+                  <img src={imageSrc}  width="100%" alt=""/>
+                </div>
+              </animated.div>
             </animated.div>
-          </animated.div>
+          </div>
         );
       })}
     </animated.div>
