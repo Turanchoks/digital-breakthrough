@@ -23,7 +23,7 @@ function Swiper({ cards }) {
   // const [results, setResults] = useState();
   const resultsRef = useRef({});
   // const responseGinenRef = useRef(false);
-  const [splash, setShowSplash] = useState(false);
+  const [splash, setShowSplash] = useState({ show: false, index: null });
 
   const [props, set] = useSprings(cards.length, i => ({
     ...to(i),
@@ -43,19 +43,18 @@ function Swiper({ cards }) {
 
       const dir = xDir < 0 ? -1 : 1;
 
-      if (!down && trigger) {
+      if (!down && trigger && xDir !== 0) {
         resultsRef.current[index] = dir === 1;
-
-        setShowSplash(
-          resultsRef.current[index] === cards[index].correct
+        setShowSplash({
+          show: resultsRef.current[index] === cards[index].correct
             ? 'correct'
-            : 'wrong'
-        );
+            : 'wrong',
+          index,
+        });
       }
 
       set(i => {
         if (index !== i) return;
-        console.log(resultsRef.current);
         const isGone = resultsRef.current[index] != null;
 
         const x = isGone ? (200 + window.innerWidth) * dir : down ? xDelta : 0;
@@ -86,18 +85,18 @@ function Swiper({ cards }) {
 
         return (
           <div key={i}>
-            {splash && (
-              <div className={`splash splash__${splash}`}>
+            {splash.show && splash.index === i && (
+              <div className={`splash splash__${splash.show}`}>
                 <div className="splash__card">
                   <div className="splash__result">
-                    <img src={`/${splash}.png`} alt="" />
-                    <p>{splash === 'wrong' ? 'Неверно!' : 'Верно!'}</p>
+                    <img src={`/${splash.show}.png`} alt="" />
+                    <p>{splash.show === 'wrong' ? 'Неверно!' : 'Верно!'}</p>
                   </div>
                   <h3>{resultText}</h3>
                   <p>{resultDescr}</p>
                   <button
                     className="splash__next"
-                    onClick={() => setShowSplash(false)}
+                    onClick={() => setShowSplash({ index: null, show: false })}
                   >
                     Далее
                   </button>
@@ -129,6 +128,14 @@ function Swiper({ cards }) {
           </div>
         );
       })}
+      <div className="swiper__left">
+        <img src="/swipe-left.png" alt="" />
+        <span>Скорее опасно</span>
+      </div>
+      <div className="swiper__right">
+        <img src="/swipe-right.png" alt="" />
+        <span>Скорее надежно</span>
+      </div>
     </animated.div>
   );
 }
