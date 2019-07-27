@@ -94,6 +94,9 @@ function Swiper({ cards }) {
                   </div>
                   <h3>{resultText}</h3>
                   <p>{resultDescr}</p>
+                  <button className="splash__next" onClick={() => setShowSplash(false)}>
+                    Далее
+                  </button>
                 </div>
               </div>
             )}

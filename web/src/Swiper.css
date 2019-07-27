@@ -114,6 +114,7 @@ h5:last-of-type {
   justify-content: center;
   color: #fff;
   flex-direction: column;
+  z-index: 9999;
 }
 
 .splash__result {
@@ -123,6 +124,7 @@ h5:last-of-type {
 .splash__card {
   width: 300px;
   max-width: 300px;
+  text-align: left;
 }
 
 .splash__result > img {
@@ -135,6 +137,15 @@ h5:last-of-type {
   font-size: 30px;
   font-weight: bold;
   margin: 0;
+}
+
+.splash__next {
+  padding: 10px 40px;
+  background: #fff;
+  border: 0;
+  color: #000;
+  font-size: 16px;
+  border-radius: 10px;
 }
 
 
