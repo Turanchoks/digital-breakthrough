@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const axios = require('axios');
 //const keys = require('../config/keys');
 const HTMLGenerator = require('./HTMLGenerator');
 const mailer = require('../utils/Mailer');
@@ -53,6 +54,23 @@ module.exports = app => {
                 </html>
             
         `);
+        
+        
+    });
+
+    app.get('/breach', (req, res) => {
+
+        const { email } = req.query;
+        console.log('email', email);
+        axios.get(`https://haveibeenpwned.com/api/v3/breachedaccount/${email}`, { headers: {'hibp-api-key': 'a2c2a3e44d3d488d98bc594ff7502d56' }}).then(resp => {
+            console.log(resp.data);
+            res.status(200).send(`
+                <html>
+                    <p>${JSON.stringify(resp.data)}</p>
+                </html>
+            
+            `);
+        })
         
         
     });

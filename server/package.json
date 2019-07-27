@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.0",
     "ejs-promise": "^0.3.3",
     "express": "^4.17.1",
     "node-sass": "^4.9.3",
