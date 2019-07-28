@@ -1,16 +1,16 @@
-import React from "react";
-import sha1 from "js-sha1";
-import { useAxiosRequest } from "use-axios-request";
-import "./Results.css";
+import React from 'react';
+import sha1 from 'js-sha1';
+import { useAxiosRequest } from 'use-axios-request';
+import './Results.css';
 
 const me = {
-  email: "aaaa@gmail.com",
-  name: "Никола Абрамов",
-  score: 65
+  email: 'aaaa@gmail.com',
+  name: 'Никола Абрамов',
+  score: 65,
 };
 
 function Results() {
-  const { isFetching, data } = useAxiosRequest("/users");
+  const { isFetching, data } = useAxiosRequest('/users');
   if (isFetching) return null;
   return (
     <div className="results">
