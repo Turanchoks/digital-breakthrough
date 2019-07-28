@@ -20,13 +20,13 @@ const splashProps = {
     url: '/swiper',
     buttonText: 'Начать',
   },
-  messenger: {
-    icon: '/messenger.png',
-    title: 'Сообщения',
-    descr: 'Отвечайте на входящие сообщения, выбрав соответствующий вариант.',
-    url: '/messenger',
-    buttonText: 'Начать',
-  },
+  // messenger: {
+  //   icon: '/messenger.png',
+  //   title: 'Сообщения',
+  //   descr: 'Отвечайте на входящие сообщения, выбрав соответствующий вариант.',
+  //   url: '/messenger',
+  //   buttonText: 'Начать',
+  // },
   mail: {
     icon: '/email.png',
     title: 'Почта',
@@ -72,14 +72,14 @@ function App() {
           />
           <Route exact path="/swiper" render={() => <Swiper />} />
 
-          <Route exact path="/messenger" render={() => <Messenger />} />
+          {/* <Route exact path="/messenger" render={() => <Messenger />} />
 
           <Route
             exact
             path="/messenger-splash"
             render={() => <Splash {...splashProps.messenger} />}
           />
-          <Route exact path="/messenger" render={() => null} />
+          <Route exact path="/messenger" render={() => null} /> */}
 
           <Route
             exact

@@ -1,3 +1,11 @@
 .k-message-box {
   display: none;
 }
+
+.k-bubble {
+  white-space: pre-wrap;
+}
+
+.k-widget {
+  height: 100vh;
+}

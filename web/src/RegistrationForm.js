@@ -328,6 +328,13 @@ export const RegistrationForm = () => {
     const fetchData = async () => {
       setIsFetching(true);
       setIsError(false);
+      setUser({
+        userId: 'asda',
+        userPoints: 0,
+        userEmail: endProps.email,
+        userName: endProps.name,
+      });
+
       await Promise.all([
         axios.get(`/api/breach?email=${endProps.email}`),
         axios.get(`/api/passbreach?pass=${endProps.sha1Pass}`),
