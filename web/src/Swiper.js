@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { useSprings, animated, interpolate } from 'react-spring/hooks';
 import { useGesture } from 'react-with-gesture';
 import './Swiper.css';
+import { useGlobalState } from './GlobalState';
 
 const cards = [
   {
@@ -57,7 +58,8 @@ const from = i => ({ rot: 0, scale: 1.5, y: -1000 });
 const trans = (r, s) => `rotate(${r / 2}deg)`;
 
 function Swiper({ history }) {
-  const userId = window.localStorage.getItem('userId');
+  const { user, setUser } = useGlobalState();
+
   const resultsRef = useRef({});
   const [splash, setShowSplash] = useState({ show: false, index: null });
 
@@ -82,9 +84,13 @@ function Swiper({ history }) {
       if (!down && trigger && xDir !== 0) {
         resultsRef.current[index] = dir === 1;
         if (resultsRef.current[index] === cards[index].correct) {
-          const userPoints = window.localStorage.getItem('userPoints');
-          axios.post(`/api/update/${userId}`);
-          window.localStorage.setItem('userPoints', +userPoints + 1);
+          axios.post(`/api/update/${user.userId}`);
+          setUser(user => {
+            return {
+              ...user,
+              userPoints: +user.userPoints + 1,
+            };
+          });
         }
         setTimeout(() => {
           setShowSplash({
@@ -126,6 +132,10 @@ function Swiper({ history }) {
       history.push('/messenger-splash');
     }
   });
+
+  if (!user) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <animated.div

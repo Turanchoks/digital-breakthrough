@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@progress/kendo-react-buttons": "^3.2.2",
+    "@progress/kendo-react-conversational-ui": "^3.2.2",
+    "@progress/kendo-react-intl": "^3.2.2",
     "axios": "^0.19.0",
     "dotenv": "^8.0.0",
     "http-proxy-middleware": "^0.19.1",
