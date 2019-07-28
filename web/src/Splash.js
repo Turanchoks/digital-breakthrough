@@ -10,7 +10,7 @@ function Splash({ title, url, buttonText, descr, icon }) {
         <h1 className="middle-splash__title">{title}</h1>
         <p className="middle-splash__description">{descr}</p>
         <Link className="middle-splash__button" to={url}>
-            {buttonText}
+          {buttonText}
         </Link>
       </div>
     </div>
