@@ -341,7 +341,7 @@ export const RegistrationForm = () => {
             setEmailCheck(checkData[0].data);
             setPassCheck(checkData[1].data);
             setUser({
-              userId: checkData[2].data,
+              userId: checkData[2].data._id,
               userPoints: 0,
               userEmail: endProps.email,
               userName: endProps.name,
