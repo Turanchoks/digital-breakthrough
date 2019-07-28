@@ -1,0 +1,95 @@
+
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>
+
+.splash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-direction: column;
+  z-index: 9999;
+  animation: fadein .3s;
+}
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.splash__result {
+  display: flex;
+}
+
+.splash__card {
+  width: 300px;
+  max-width: 300px;
+  text-align: left;
+}
+
+.splash__result > img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+.splash__result > p {
+  line-height: 50px;
+  font-size: 30px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.splash__next {
+  padding: 14px 40px;
+  background: #fff;
+  border: 0;
+  color: #06c6cb;
+  font-size: 16px;
+  border-radius: 10px;
+  font-weight: bold;
+  width: 100%;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.swiper__left img,
+.swiper__right img {
+  width: 60px;
+  height: 60px;
+}
+
+.swiper__left,
+.swiper__right {
+  position: absolute;
+  bottom: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: .75;
+}
+
+.swiper__left {
+  left: 40px;
+}
+
+.swiper__right {
+  right: 40px;
+}
+
+.splash__wrong {
+  background: rgba(210, 64, 39, .94);
+}
+
+.splash__wrong .splash__next{
+  color: rgba(210, 64, 39, 1);
+}
+.splash__correct {
+  background: rgba(0, 201, 255, 1);
+}
+</style>
+
+</head><body><div class="splash splash__wrong"><div class="splash__card"><div class="splash__result"><p>Ошибка!</p></div><h3>Данное письмо небезопасно</h3><p>Переход по этой ссылке позволит получить доступ к вашим данным.</p><a href="/results"><button class="splash__next">Далее</button></a></div></div></body></html>

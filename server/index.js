@@ -23,6 +23,8 @@ client.connect(function(err) {
 
 app.use(cors());
 
+app.set('view engine', 'ejs');
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
