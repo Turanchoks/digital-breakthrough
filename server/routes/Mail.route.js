@@ -82,6 +82,7 @@ module.exports = app => {
                 }, );
         }, (error) =>{
             console.log('error', JSON.stringify(error));
+            res.status(500).send(`/sendmail error: ${JSON.stringify(error)}`);
         })
 
     });
@@ -108,13 +109,19 @@ module.exports = app => {
     });
 
     app.get('/breach', (req, res) => {
-
         const { email } = req.query;
-        axios.get(`https://haveibeenpwned.com/api/v3/breachedaccount/${email}`, { headers: {'hibp-api-key': keys.hibp_api_key }}).then(resp => {
+        console.log('breach', email, keys.hibp_api_key);
+        axios.get(`https://haveibeenpwned.com/api/v3/breachedaccount/${encodeURIComponent(email)}`, { headers: {'hibp-api-key': keys.hibp_api_key }}).then(resp => {
             console.log(resp.data);
             res.status(200).send(JSON.stringify(resp.data));
+        }, error => {
+            console.log('status', error.response.status);
+            if (error.response.status === 404) {
+                res.status(200).send(JSON.stringify([]));
+            } else {
+                res.status(500).send(`/breach error: ${JSON.stringify(error)}`);
+            }
         })
-        
         
     });
 
@@ -126,7 +133,7 @@ module.exports = app => {
             //console.log(resp.data.split('\r\n'));
             const arr1 = resp.data.split('\r\n');
             const arr2 = arr1.map(item => item.split(":")[0]);
-            console.log(arr2, arr2.includes(pass));
+            //console.log(arr2, arr2.includes(pass));
             if (pass === '8cb2237d0679ca88db6464eac60da96345513964') {
                 res.status(200).send(String(true));
                 // захардкоженный костыль т.к. в айпи pwnedpasswords не удалось найти хеши скомпроментированных паролей
@@ -134,6 +141,8 @@ module.exports = app => {
                 res.status(200).send(String(arr2.includes(pass)));
             }
             
+        }, error => {
+            console.log(`/passbreach error: ${JSON.stringify(error)}`)
         })
         
         
