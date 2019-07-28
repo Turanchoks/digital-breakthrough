@@ -1,21 +1,12 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const MongoClient = require('mongodb').MongoClient;
 const cors = require('cors');
-const keys = require('./config');
+const loaddb = require('./utils/db');
 
 const app = express();
-const client = new MongoClient(keys.mongoURI);
 
-client.connect(function(err) {
-  if (err) {
-    console.error(err);
-  }
-
-  global.db = client.db('mongo');
-  console.log('succesfully connected to mongodb');
-});
+loaddb();
 
 app.use(cors());
 
