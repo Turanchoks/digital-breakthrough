@@ -118,20 +118,11 @@ module.exports = app => {
   });
 
   app.get('/rightclick', (req, res) => {
-    res.status(200).send(`
-            <html>
-                <h1>Вы все сделали правильно! Ссылка безопасна!</h1>
-            </html>
-        `);
+    res.render('rightanswer', {});
   });
 
   app.get('/wrongclick', (req, res) => {
-    res.status(200).send(`
-                <html>
-                    <h1>Вы только что перешли по вредоносной ссылке!</h1>
-                </html>
-            
-        `);
+    res.render('wronganswer', {});
   });
 
   app.get('/breach', (req, res) => {
