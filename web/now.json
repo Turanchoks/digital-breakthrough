@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "name": "web",
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@now/static-build",
+      "config": { "distDir": "build" }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.+)",
+      "dest": "https://snowed-server.turanchoks.now.sh/$1"
+    },
+    { "src": "^/static/(.*)", "dest": "/static/$1" },
+    { "src": "^/favicon.ico", "dest": "/favicon.ico" },
+    { "src": "^/(.*)", "dest": "/index.html" }
+  ]
+}

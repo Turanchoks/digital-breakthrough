@@ -5,5 +5,5 @@ module.exports = {
   mailgunPrivateApiKey: process.env.MAILGUN_KEY,
   hibp_api_key: process.env.HIBP_KEY,
   domain: process.env.DOMAIN,
-  port: process.env.PORT,
+  port: 9000,
 };

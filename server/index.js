@@ -28,6 +28,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 require('./routes/Mail.route')(app);
 
+app.get('/api/test', (req, res) => {
+  res.send('test');
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('public', 'index.html'));
 });

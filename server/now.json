@@ -5,8 +5,13 @@
     "MONGO_URI": "@mongo-uri",
     "MAILGUN_KEY": "@mailgun-key",
     "HIBP_KEY": "@hibp-key",
-    "DOMAIN": "@domain",
-    "PORT": "@port"
+    "DOMAIN": "@domain"
   },
-  "builds": [{ "src": "**/*.js", "use": "@now/node" }]
+  "builds": [
+    {
+      "src": "index.js",
+      "use": "@now/node"
+    }
+  ],
+  "routes": [{ "src": "(.*)", "dest": "index.js" }]
 }
