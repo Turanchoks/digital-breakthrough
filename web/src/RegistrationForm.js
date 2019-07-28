@@ -12,6 +12,9 @@ import {
   Modal,
   Header,
   Divider,
+  Dimmer,
+  Loader,
+  Message,
 } from 'semantic-ui-react';
 import sha1 from 'js-sha1';
 
@@ -20,6 +23,7 @@ import { useGlobalState } from './GlobalState';
 
 const WARNING_COLOR = 'rgba(210, 64, 39, .9)';
 const NORMAL_COLOR = '#2C95FF';
+const SUCCESS_COLOR = 'rgba(0, 201, 200, .94)';
 
 const formReducer = (state, action) => {
   switch (action.type) {
@@ -42,7 +46,7 @@ const formReducer = (state, action) => {
   }
 };
 
-const RegistrationFormStart = ({ submit }) => {
+const RegistrationFormStart = ({ submit, error }) => {
   const [state, dispatch] = React.useReducer(formReducer, {
     name: '',
     email: '',
@@ -61,6 +65,7 @@ const RegistrationFormStart = ({ submit }) => {
         flexDirection: 'column',
         width: '100%',
       }}
+      error={error}
     >
       <Image
         src="/avatar.png"
@@ -182,6 +187,7 @@ const RegistrationFormStart = ({ submit }) => {
           </Modal.Actions>
         </Modal>
       </Form.Field>
+      <Message error header="Ошибка" content="Что-то пошло не так." />
       <Button
         className="registration-form__submit"
         type="submit"
@@ -307,6 +313,7 @@ const RegistrationFormEnd = props => {
 
 export const RegistrationForm = () => {
   const [isRegistered, setIsRegistered] = React.useState(false);
+  const [isError, setIsError] = React.useState(false);
   const [isFetching, setIsFetching] = React.useState(false);
   const [endProps, setEndProps] = React.useState(null);
   const [emailCheck, setEmailCheck] = React.useState(null);
@@ -320,6 +327,7 @@ export const RegistrationForm = () => {
   React.useEffect(() => {
     const fetchData = async () => {
       setIsFetching(true);
+      setIsError(false);
       await Promise.all([
         axios.get(`/api/breach?email=${endProps.email}`),
         axios.get(`/api/passbreach?pass=${endProps.sha1Pass}`),
@@ -340,28 +348,50 @@ export const RegistrationForm = () => {
           setIsRegistered(true);
           setIsFetching(false);
         }
-      });
+      })
+      .catch(() => {
+          setIsFetching(false);
+          setIsError(true);
+        });
     };
     if (endProps) fetchData();
-  }, [endProps]);
+  }, [endProps, setUser]);
   const { transform, opacity } = useSpring({
     opacity: isRegistered ? 1 : 0,
     transform: `perspective(600px) rotateY(${isRegistered ? 180 : 0}deg)`,
     config: { mass: 5, tension: 500, friction: 80 },
   });
+
+  const emailBreached = emailCheck && emailCheck.length > 0;
+  const passLeaked = passCheck;
+  const rulesNotRead = endProps && !endProps.rules;
+  const successReg = !emailBreached && !passLeaked && !rulesNotRead;
   return (
     <div
       className="registration-wrapper"
       style={{
-        backgroundColor: isRegistered ? WARNING_COLOR : NORMAL_COLOR,
+        backgroundColor: isRegistered
+          ? successReg
+            ? SUCCESS_COLOR
+            : WARNING_COLOR
+          : NORMAL_COLOR,
       }}
     >
+      {isFetching && (
+        <Dimmer active>
+          <Loader />
+        </Dimmer>
+      )}
+
       {!isRegistered ? (
         <animated.div
           className="registration-form__container"
           style={{ opacity: opacity.interpolate(o => 1 - o), transform }}
         >
-          <RegistrationFormStart submit={state => setEndProps(state)} />
+          <RegistrationFormStart
+            submit={state => setEndProps(state)}
+            error={isError}
+          />
         </animated.div>
       ) : (
         <animated.div
