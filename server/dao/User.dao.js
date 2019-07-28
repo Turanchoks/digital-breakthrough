@@ -8,7 +8,7 @@ class UserDao {
     const users = db.collection('hackusers');
     let result;
     try {
-      result = await users.insertOne({ ...user, points: 0 });
+      result = await users.insert({ ...user, points: 0 });
     } catch (error) {
       console.error(error);
     }
