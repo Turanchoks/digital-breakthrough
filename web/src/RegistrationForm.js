@@ -1,25 +1,17 @@
 import * as React from "react";
 import axios from "axios";
-import {
-  useSprings,
-  animated,
-  interpolate,
-  useSpring
-} from "react-spring/hooks";
+import { Link } from "react-router-dom";
+import { animated, useSpring } from "react-spring/hooks";
 import {
   Button,
   Checkbox,
   Form,
-  Card,
   Icon,
   List,
   Image,
   Modal,
   Header,
   Divider,
-  Segment,
-  Dimmer,
-  Loader
 } from "semantic-ui-react";
 import sha1 from "js-sha1";
 import avatar from "./images/nicecat.jpg";
@@ -198,10 +190,10 @@ const RegistrationFormStart = ({ submit }) => {
 };
 
 const RegistrationFormEnd = props => {
-  const emailBreached = true;
-  const passLeaked = true;
-  const rulesNotRead = !props.rules;
   console.log(props);
+  const emailBreached = props.emailCheck.length > 0;
+  const passLeaked = props.passCheck;
+  const rulesNotRead = !props.rules;
   return (
     <div
       style={{
@@ -239,16 +231,9 @@ const RegistrationFormEnd = props => {
           </List.Item>
         )}
       </List>
-      <Button
-        type="submit"
-        onClick={() => {
-          console.log("dalee");
-          props.goBack();
-        }}
-        positive
-      >
+      <Link className="ui positive button" to="/swiper-splash">
         Далее
-      </Button>
+      </Link>
     </div>
   );
 };
@@ -256,34 +241,38 @@ const RegistrationFormEnd = props => {
 
 export const RegistrationForm = () => {
   const [isRegistered, setIsRegistered] = React.useState(false);
-  const [isFetching, setIsFetching] = React.useState(false);
   const [endProps, setEndProps] = React.useState(null);
-  const submit = async state => {
-    setIsFetching(true);
-    console.log("checks 0", state);
-    const checks = await Promise.all([
-      axios.post(`http://localhost:9000/register`, {
-        ...state,
-        pass: state.sha1Pass
-      }),
-      axios.get(`http://localhost:9000/breach?email=${state.email}`),
-      axios.get(`http://localhost:9000/passbreach?pass=${state.sha1Pass}`)
-    ]);
-    setIsFetching(false);
-    console.log("checks", checks);
-    setIsRegistered(true);
-    setEndProps({
-      ...state
-      // emailCheck: checks[0].data,
-      // passCheck: checks[1].data
-    });
-  };
+  const [emailCheck, setEmailCheck] = React.useState(null);
+  const [passCheck, setPassCheck] = React.useState(null);
+  const [prevEndProps, setPrevEndProps] = React.useState(null);
+  if (endProps !== prevEndProps) {
+    setPrevEndProps(endProps);
+  }
+  React.useEffect(() => {
+    const fetchData = async () => {
+      await Promise.all([
+        axios.get(`/breach?email=${endProps.email}`),
+        axios.get(`/passbreach?pass=${endProps.sha1Pass}`),
+        axios.post(`/register`, {
+          ...endProps,
+          pass: endProps.sha1Pass
+        })
+      ]).then(checkData => {
+        if (checkData) {
+          setEmailCheck(checkData[0].data);
+          setPassCheck(checkData[1].data);
+          console.log(checkData);
+          setIsRegistered(true);
+        }
+      });
+    };
+    if (endProps) fetchData();
+  }, [endProps]);
   const { transform, opacity } = useSpring({
     opacity: isRegistered ? 1 : 0,
     transform: `perspective(600px) rotateY(${isRegistered ? 180 : 0}deg)`,
     config: { mass: 5, tension: 500, friction: 80 }
   });
-  console.log(isRegistered);
   return (
     <div
       className="registration-wrapper"
@@ -296,7 +285,7 @@ export const RegistrationForm = () => {
           className="registration-form__container"
           style={{ opacity: opacity.interpolate(o => 1 - o), transform }}
         >
-          <RegistrationFormStart submit={submit} />
+          <RegistrationFormStart submit={state => setEndProps(state)} />
         </animated.div>
       ) : (
         <animated.div
@@ -308,17 +297,11 @@ export const RegistrationForm = () => {
         >
           <RegistrationFormEnd
             {...endProps}
-            goBack={() => setIsRegistered(false)}
+            emailCheck={emailCheck}
+            passCheck={passCheck}
           />
         </animated.div>
       )}
     </div>
   );
 };
-
-// isFetching ? (
-//   <Segment>
-//     <Dimmer active>
-//       <Loader />
-//     </Dimmer>
-//   </Segment>

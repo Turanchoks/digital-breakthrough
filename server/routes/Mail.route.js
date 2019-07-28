@@ -9,13 +9,6 @@ const userDao = require('./../dao/User.dao');
 
 
 module.exports = app => {
-  app.post("/sendmail", (req, res) => {
-    HTMLGenerator({
-      template: "tinkoff_template",
-      params: { name: "Дима", url: "http://localhost:9000/wrongclick" }
-    }).then(
-      html => {
-        const { email, name } = req.body;
 
 
     /*
@@ -94,16 +87,18 @@ module.exports = app => {
 
     });
 
-  app.get("/rightclick", (req, res) => {
-    res.status(200).send(`
+    app.get('/rightclick', (req, res) => {
+        res.status(200).send(`
             <html>
                 <h1>Вы все сделали правильно! Ссылка безопасна!</h1>
             </html>
         `);
-  });
+       
+      
+    });
 
-  app.get("/wrongclick", (req, res) => {
-    res.status(200).send(`
+    app.get('/wrongclick', (req, res) => {
+        res.status(200).send(`
                 <html>
                     <h1>Вы только что перешли по вредоносной ссылке!</h1>
                 </html>
@@ -154,16 +149,4 @@ module.exports = app => {
     });
 
 
-  app.get("/breach", (req, res) => {
-    const { email } = req.query;
-    console.log("email", email);
-    axios
-      .get(`https://haveibeenpwned.com/api/v3/breachedaccount/${email}`, {
-        headers: { "hibp-api-key":  keys.hbip}
-      })
-      .then(resp => {
-        console.log(resp.data);
-        res.status(200).send(resp.data);
-      });
-  });
 };
