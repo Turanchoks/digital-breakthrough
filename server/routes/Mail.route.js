@@ -15,8 +15,8 @@ module.exports = app => {
     const { email, pass, name } = req.body;
     userDao.saveUserIfNotExist({ email, pass, name }).then(
       result => {
-        console.info(result);
-        res.status(200).send(JSON.stringify(result.insertedIds['0']));
+        console.info(result.ops[0]);
+        res.status(200).send(JSON.stringify(result.ops[0]));
       },
       error => {
         res
