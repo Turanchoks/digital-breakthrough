@@ -1,0 +1,25 @@
+{
+  "name": "digital-breakthrough",
+  "version": 2,
+  "public": true,
+  "builds": [
+    {
+      "src": "dashboard/package.json",
+      "use": "@now/static-build"
+    },
+    {
+      "src": "server/*.js",
+      "use": "@now/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "server/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dashboard/$1"
+    }
+  ]
+}
