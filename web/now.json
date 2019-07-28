@@ -14,6 +14,7 @@
       "dest": "https://snowed-server.turanchoks.now.sh/$1"
     },
     { "src": "^/static/(.*)", "dest": "/static/$1" },
+    { "src": "^/(.*).png", "dest": "/$1" },
     { "src": "^/favicon.ico", "dest": "/favicon.ico" },
     { "src": "^/(.*)", "dest": "/index.html" }
   ]
