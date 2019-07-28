@@ -1,7 +1,9 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import sha1 from 'js-sha1';
 import { useAxiosRequest } from 'use-axios-request';
 import './Results.css';
+import { useGlobalState } from './GlobalState';
 
 const me = {
   email: 'aaaa@gmail.com',
@@ -11,9 +13,12 @@ const me = {
 
 function Results() {
   const { isFetching, data } = useAxiosRequest('/api/users');
-  const userEmail = window.localStorage.getItem('userEmail');
-  const userName = window.localStorage.getItem('userName');
-  const userPoints = window.localStorage.getItem('userPoints');
+  const { user } = useGlobalState();
+  if (!user) {
+    return <Redirect to="/" />;
+  }
+  const { userName, userEmail, userPoints } = user;
+
   if (isFetching) return null;
   return (
     <div className="results">

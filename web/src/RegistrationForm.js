@@ -16,6 +16,7 @@ import {
 import sha1 from 'js-sha1';
 
 import './RegForm.css';
+import { useGlobalState } from './GlobalState';
 
 const WARNING_COLOR = 'rgba(210, 64, 39, .9)';
 const NORMAL_COLOR = '#2C95FF';
@@ -311,6 +312,8 @@ export const RegistrationForm = () => {
   const [emailCheck, setEmailCheck] = React.useState(null);
   const [passCheck, setPassCheck] = React.useState(null);
   const [prevEndProps, setPrevEndProps] = React.useState(null);
+  const { setUser } = useGlobalState();
+
   if (endProps !== prevEndProps) {
     setPrevEndProps(endProps);
   }
@@ -328,10 +331,12 @@ export const RegistrationForm = () => {
         if (checkData) {
           setEmailCheck(checkData[0].data);
           setPassCheck(checkData[1].data);
-          localStorage.setItem('userId', checkData[2].data);
-          localStorage.setItem('userPoints', 0);
-          localStorage.setItem('userEmail', endProps.email);
-          localStorage.setItem('userName', endProps.name);
+          setUser({
+            userId: checkData[2].data,
+            userPoints: 0,
+            userEmail: endProps.email,
+            userName: endProps.name,
+          });
           setIsRegistered(true);
           setIsFetching(false);
         }
