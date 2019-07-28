@@ -4,7 +4,7 @@
   "public": true,
   "builds": [
     {
-      "src": "dashboard/package.json",
+      "src": "web/package.json",
       "use": "@now/static-build"
     },
     {
@@ -19,7 +19,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/dashboard/$1"
+      "dest": "/web/$1"
     }
   ]
 }
