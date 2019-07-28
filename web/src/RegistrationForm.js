@@ -222,10 +222,13 @@ export const RegistrationForm = () => {
   const [endProps, setEndProps] = React.useState(null);
   const submit = async state => {
     setIsFetching(true);
-    // const checks = await Promise.all([
-    //   axios.get(`/api/hibp/breachedaccount/${state.email}`),
-    //   axios.get(`/api/passwords/${state.sha1Pass}`)
-    // ])
+    console.log('checks 0', state)
+    const checks = await Promise.all([
+       axios.post(`http://localhost:9000/register`, { ...state, pass: state.sha1Pass }),
+       axios.get(`http://localhost:9000/breach?email=${state.email}`),
+       axios.get(`http://localhost:9000/passbreach?pass=${state.sha1Pass}`)
+     ])
+    console.log('checks', checks)
     setIsRegistered(true);
     setEndProps(state);
   };

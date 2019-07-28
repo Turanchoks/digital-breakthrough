@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
+var cors = require('cors');
 const keys = require('./config/keys');
 
 
@@ -20,6 +21,7 @@ client.connect(function(err) {
   console.log('succesfully connected to mongodb');
 });
 
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
 

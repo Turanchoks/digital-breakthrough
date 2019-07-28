@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
-import logo from './logo.svg';
 import Start from './pages/start';
 import NotFound from './pages/not-found';
-import s from './App.css';
+// import s from './App.css';
 import { RegistrationForm } from "./RegistrationForm";
 import Splash from "./Splash";
 import Results from "./Results";
@@ -50,7 +49,6 @@ function App() {
               <Route exact path="/email-splash" component={() => <Splash {...splashProps.mail} />} />
               <Route exact path="/results" component={() => <Results />} />
               <Route component={NotFound} />
-
             </Switch>
           {/* </div>
         </header> */}
