@@ -1,14 +1,14 @@
 var ObjectID = require('mongodb').ObjectID;
 
-const loaddb = require('./../utils/db');
+const loadDB = require('./../utils/db');
 
 class UserDao {
   async saveUserIfNotExist(user) {
-      const db = await loadDB();
+    const db = await loadDB();
     const users = db.collection('hackusers');
     let result;
     try {
-      result = await users.insert({ ...user, points: 0 });
+      result = await users.insertOne({ ...user, points: 0 });
     } catch (error) {
       console.error(error);
     }
