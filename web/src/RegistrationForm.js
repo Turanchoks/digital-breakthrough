@@ -1,7 +1,7 @@
-import * as React from "react";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import { animated, useSpring } from "react-spring/hooks";
+import * as React from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { animated, useSpring } from 'react-spring/hooks';
 import {
   Button,
   Checkbox,
@@ -15,26 +15,26 @@ import {
 } from "semantic-ui-react";
 import sha1 from "js-sha1";
 
-import "./RegForm.css";
+import './RegForm.css';
 
-const WARNING_COLOR = "rgba(210, 64, 39, .9)";
-const NORMAL_COLOR = "#2C95FF";
+const WARNING_COLOR = 'rgba(210, 64, 39, .9)';
+const NORMAL_COLOR = '#2C95FF';
 
 const formReducer = (state, action) => {
   switch (action.type) {
-    case "change name":
+    case 'change name':
       return { ...state, name: action.payload };
-    case "change email":
+    case 'change email':
       return { ...state, email: action.payload };
-    case "change pass":
+    case 'change pass':
       return { ...state, pass: action.payload, sha1Pass: sha1(action.payload) };
-    case "change check":
+    case 'change check':
       return { ...state, check: !state.check };
-    case "change rules":
+    case 'change rules':
       return { ...state, rules: true, modal: false, check: true };
-    case "open modal":
+    case 'open modal':
       return { ...state, modal: true };
-    case "close modal":
+    case 'close modal':
       return { ...state, modal: false };
     default:
       throw new Error();
@@ -43,12 +43,12 @@ const formReducer = (state, action) => {
 
 const RegistrationFormStart = ({ submit }) => {
   const [state, dispatch] = React.useReducer(formReducer, {
-    name: "",
-    email: "",
-    pass: "",
-    sha1Pass: "",
+    name: '',
+    email: '',
+    pass: '',
+    sha1Pass: '',
     check: false,
-    rules: false
+    rules: false,
   });
   const { name, email, pass, check, rules, sha1Pass } = state;
   const isDisabledSubmit = !(name && email && pass && check);
@@ -76,7 +76,7 @@ const RegistrationFormStart = ({ submit }) => {
         <input
           placeholder="Имя"
           onChange={e =>
-            dispatch({ type: "change name", payload: e.target.value })
+            dispatch({ type: 'change name', payload: e.target.value })
           }
           value={name}
         />
@@ -85,7 +85,7 @@ const RegistrationFormStart = ({ submit }) => {
         <input
           placeholder="E-mail"
           onChange={e =>
-            dispatch({ type: "change email", payload: e.target.value })
+            dispatch({ type: 'change email', payload: e.target.value })
           }
           value={email}
         />
@@ -94,7 +94,7 @@ const RegistrationFormStart = ({ submit }) => {
         <input
           placeholder="Пароль"
           onChange={e =>
-            dispatch({ type: "change pass", payload: e.target.value })
+            dispatch({ type: 'change pass', payload: e.target.value })
           }
           value={pass}
           type="password"
@@ -105,7 +105,7 @@ const RegistrationFormStart = ({ submit }) => {
           label="Согласен c правилами"
           checked={check}
           onClick={() => {
-            dispatch({ type: "change check" });
+            dispatch({ type: 'change check' });
           }}
         />
 
@@ -116,7 +116,7 @@ const RegistrationFormStart = ({ submit }) => {
               name="question circle outline"
               size="small"
               onClick={() => {
-                dispatch({ type: "open modal" });
+                dispatch({ type: 'open modal' });
               }}
               style={{
                 color: '#000',
@@ -128,7 +128,7 @@ const RegistrationFormStart = ({ submit }) => {
           }
           open={state.modal}
           onClose={() => {
-            dispatch({ type: "close modal" });
+            dispatch({ type: 'close modal' });
           }}
         >
           <Modal.Header>Соглашение на всё</Modal.Header>
@@ -174,7 +174,7 @@ const RegistrationFormStart = ({ submit }) => {
             <Button
               primary
               onClick={() => {
-                dispatch({ type: "change rules" });
+                dispatch({ type: 'change rules' });
               }}
             >
               Прочитал(а) и согласен(на) <Icon name="right chevron" />
@@ -288,13 +288,16 @@ export const RegistrationForm = () => {
         axios.get(`/passbreach?pass=${endProps.sha1Pass}`),
         axios.post(`/register`, {
           ...endProps,
-          pass: endProps.sha1Pass
-        })
+          pass: endProps.sha1Pass,
+        }),
       ]).then(checkData => {
         if (checkData) {
           setEmailCheck(checkData[0].data);
           setPassCheck(checkData[1].data);
-          console.log(checkData);
+          localStorage.setItem('userId', checkData[2].data);
+          localStorage.setItem('userPoints', 0);
+          localStorage.setItem('userEmail', endProps.email);
+          localStorage.setItem('userName', endProps.name);
           setIsRegistered(true);
         }
       });
@@ -304,13 +307,13 @@ export const RegistrationForm = () => {
   const { transform, opacity } = useSpring({
     opacity: isRegistered ? 1 : 0,
     transform: `perspective(600px) rotateY(${isRegistered ? 180 : 0}deg)`,
-    config: { mass: 5, tension: 500, friction: 80 }
+    config: { mass: 5, tension: 500, friction: 80 },
   });
   return (
     <div
       className="registration-wrapper"
       style={{
-        backgroundColor: isRegistered ? WARNING_COLOR : NORMAL_COLOR
+        backgroundColor: isRegistered ? WARNING_COLOR : NORMAL_COLOR,
       }}
     >
       {!isRegistered ? (
@@ -325,7 +328,7 @@ export const RegistrationForm = () => {
           className="registration-form__container"
           style={{
             opacity,
-            transform: transform.interpolate(t => `${t} rotateY(180deg)`)
+            transform: transform.interpolate(t => `${t} rotateY(180deg)`),
           }}
         >
           <RegistrationFormEnd

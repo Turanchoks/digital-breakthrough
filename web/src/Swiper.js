@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 import { useSprings, animated, interpolate } from 'react-spring/hooks';
 import { useGesture } from 'react-with-gesture';
 import './Swiper.css';
@@ -56,6 +57,7 @@ const from = i => ({ rot: 0, scale: 1.5, y: -1000 });
 const trans = (r, s) => `rotate(${r / 2}deg)`;
 
 function Swiper({ history }) {
+  const userId = window.localStorage.getItem('userId');
   const resultsRef = useRef({});
   const [splash, setShowSplash] = useState({ show: false, index: null });
 
@@ -79,17 +81,18 @@ function Swiper({ history }) {
 
       if (!down && trigger && xDir !== 0) {
         resultsRef.current[index] = dir === 1;
-        setTimeout(
-          () =>
-            setShowSplash({
-              show:
-                resultsRef.current[index] === cards[index].correct
-                  ? 'correct'
-                  : 'wrong',
-              index,
-            }),
-          200
-        );
+        if (resultsRef.current[index] === cards[index].correct) {
+          axios.post(`/update/${userId}`);
+        }
+        setTimeout(() => {
+          setShowSplash({
+            show:
+              resultsRef.current[index] === cards[index].correct
+                ? 'correct'
+                : 'wrong',
+            index,
+          });
+        }, 200);
       }
 
       set(i => {
