@@ -303,10 +303,10 @@ const RegistrationFormEnd = props => {
     </div>
   );
 };
-// `/api/hibp/breachedaccount/${email}`
 
 export const RegistrationForm = () => {
   const [isRegistered, setIsRegistered] = React.useState(false);
+  const [isFetching, setIsFetching] = React.useState(false);
   const [endProps, setEndProps] = React.useState(null);
   const [emailCheck, setEmailCheck] = React.useState(null);
   const [passCheck, setPassCheck] = React.useState(null);
@@ -316,6 +316,7 @@ export const RegistrationForm = () => {
   }
   React.useEffect(() => {
     const fetchData = async () => {
+      setIsFetching(true);
       await Promise.all([
         axios.get(`/api/breach?email=${endProps.email}`),
         axios.get(`/api/passbreach?pass=${endProps.sha1Pass}`),
@@ -332,6 +333,7 @@ export const RegistrationForm = () => {
           localStorage.setItem('userEmail', endProps.email);
           localStorage.setItem('userName', endProps.name);
           setIsRegistered(true);
+          setIsFetching(false);
         }
       });
     };
