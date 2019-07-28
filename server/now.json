@@ -1,0 +1,12 @@
+{
+  "name": "snowed-server",
+  "version": 2,
+  "env": {
+    "MONGO_URI": "@mongo-uri",
+    "MAILGUN_KEY": "@mailgun-key",
+    "HIBP_KEY": "@hibp-key",
+    "DOMAIN": "@domain",
+    "PORT": "@port"
+  },
+  "builds": [{ "src": "**/*.js", "use": "@now/node" }]
+}
