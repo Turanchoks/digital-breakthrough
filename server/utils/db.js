@@ -10,7 +10,7 @@ const loadDB = async () => {
     }
     try {
         const client = await MongoClient.connect(keys.mongoURI);
-        global.db = client.db('mongo');
+        // global.db = client.db('mongo');
         db = client.db('mongo');
         console.log('connection to db successful');
     } catch (err) {

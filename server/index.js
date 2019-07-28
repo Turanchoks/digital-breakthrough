@@ -6,8 +6,6 @@ const loaddb = require('./utils/db');
 
 const app = express();
 
-loaddb();
-
 app.use(cors());
 
 app.set('view engine', 'ejs');
@@ -15,7 +13,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.urlencoded({ extended: true }));
 
 require('./routes/Mail.route')(app);
 
@@ -26,7 +24,6 @@ app.get('/api/test', (req, res) => {
 app.get('*', (req, res) => {
   res.sendFile(path.resolve('public', 'index.html'));
 });
-
 module.exports = app;
 
 // https://flaviocopes.com/node-exceptions/

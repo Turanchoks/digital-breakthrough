@@ -1,8 +1,11 @@
 var ObjectID = require('mongodb').ObjectID;
 
+const loaddb = require('./../utils/db');
+
 class UserDao {
   async saveUserIfNotExist(user) {
-    const users = global.db.collection('hackusers');
+      const db = await loadDB();
+    const users = db.collection('hackusers');
     let result;
     try {
       result = await users.insert({ ...user, points: 0 });
@@ -14,7 +17,8 @@ class UserDao {
   }
 
   async getUser(id) {
-    const users = global.db.collection('hackusers');
+      const db = await loadDB();
+      const users = db.collection('hackusers');
     let result;
     try {
       result = await users.findOne({ _id: ObjectID(id) });
@@ -26,7 +30,8 @@ class UserDao {
   }
 
   async getAllUsers() {
-    const users = global.db.collection('hackusers');
+      const db = await loadDB();
+      const users = db.collection('hackusers');
     let result;
     try {
       result = await users
@@ -41,7 +46,9 @@ class UserDao {
   }
 
   async updateUser(id) {
-    const users = global.db.collection('hackusers');
+    const db = await loadDB();
+
+    const users = db.collection('hackusers');
     let result;
     try {
       result = await users.updateOne(
