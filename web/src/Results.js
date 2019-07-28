@@ -10,7 +10,7 @@ const me = {
 };
 
 function Results() {
-  const { isFetching, data } = useAxiosRequest('/users');
+  const { isFetching, data } = useAxiosRequest('/api/users');
   const userEmail = window.localStorage.getItem('userEmail');
   const userName = window.localStorage.getItem('userName');
   const userPoints = window.localStorage.getItem('userPoints');

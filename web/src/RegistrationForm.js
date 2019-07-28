@@ -52,7 +52,6 @@ const RegistrationFormStart = ({ submit }) => {
   });
   const { name, email, pass, check, rules, sha1Pass } = state;
   const isDisabledSubmit = !(name && email && pass && check);
-  // const { isFetching, error, data, update } = useAxiosRequest(`/api/hibp/breachedaccount/${email}`);
 
   return (
     <Form
@@ -318,9 +317,9 @@ export const RegistrationForm = () => {
   React.useEffect(() => {
     const fetchData = async () => {
       await Promise.all([
-        axios.get(`/breach?email=${endProps.email}`),
-        axios.get(`/passbreach?pass=${endProps.sha1Pass}`),
-        axios.post(`/register`, {
+        axios.get(`/api/breach?email=${endProps.email}`),
+        axios.get(`/api/passbreach?pass=${endProps.sha1Pass}`),
+        axios.post(`/api/register`, {
           ...endProps,
           pass: endProps.sha1Pass,
         }),

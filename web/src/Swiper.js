@@ -83,7 +83,7 @@ function Swiper({ history }) {
         resultsRef.current[index] = dir === 1;
         if (resultsRef.current[index] === cards[index].correct) {
           const userPoints = window.localStorage.getItem('userPoints');
-          axios.post(`/update/${userId}`);
+          axios.post(`/api/update/${userId}`);
           window.localStorage.setItem('userPoints', +userPoints + 1);
         }
         setTimeout(() => {
