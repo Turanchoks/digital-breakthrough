@@ -110,7 +110,7 @@ module.exports = app => {
     app.get('/breach', (req, res) => {
 
         const { email } = req.query;
-        axios.get(`https://haveibeenpwned.com/api/v3/breachedaccount/${email}`, { headers: {'hibp-api-key': 'a2c2a3e44d3d488d98bc594ff7502d56' }}).then(resp => {
+        axios.get(`https://haveibeenpwned.com/api/v3/breachedaccount/${email}`, { headers: {'hibp-api-key': keys.hibp_api_key }}).then(resp => {
             console.log(resp.data);
             res.status(200).send(JSON.stringify(resp.data));
         })
@@ -122,7 +122,7 @@ module.exports = app => {
 
         const { pass } = req.query;
         console.log('passhash', pass, `https://api.pwnedpasswords.com/range/${pass.slice(0, 5)}`);
-        axios.get(`https://api.pwnedpasswords.com/range/${pass.slice(0, 5)}`, { headers: {'hibp-api-key': 'a2c2a3e44d3d488d98bc594ff7502d56' }}).then(resp => {
+        axios.get(`https://api.pwnedpasswords.com/range/${pass.slice(0, 5)}`, { headers: {'hibp-api-key': keys.hibp_api_key }}).then(resp => {
             //console.log(resp.data.split('\r\n'));
             const arr1 = resp.data.split('\r\n');
             const arr2 = arr1.map(item => item.split(":")[0]);
