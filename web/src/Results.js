@@ -11,6 +11,9 @@ const me = {
 
 function Results() {
   const { isFetching, data } = useAxiosRequest('/users');
+  const userEmail = window.localStorage.getItem('userEmail');
+  const userName = window.localStorage.getItem('userName');
+  const userPoints = window.localStorage.getItem('userPoints');
   if (isFetching) return null;
   return (
     <div className="results">
@@ -19,14 +22,16 @@ function Results() {
         <div className="results__my">
           <img
             src={`https://robohash.org/${sha1(
-              me.name,
-              me.email
+              userName,
+              userEmail
             )}.png?bgset=bg1`}
-            alt={me.name}
+            alt={userName}
           />
-          <span className="results__user-name results__my-name">{me.name}</span>
+          <span className="results__user-name results__my-name">
+            {userName}
+          </span>
           <span className="results__user-score results__my-score">
-            {me.score}
+            {userPoints}
           </span>
         </div>
         <div className="results__table">

@@ -86,8 +86,8 @@ module.exports = app => {
       params: {
         name: name,
         url: iswrong
-          ? `http://${keys.domain}/wrongclick`
-          : `http://${keys.domain}/wrightclick`,
+          ? `http://${config.domain}/wrongclick`
+          : `http://${config.domain}/wrightclick`,
       },
     }).then(
       html => {
@@ -136,13 +136,13 @@ module.exports = app => {
 
   app.get('/breach', (req, res) => {
     const { email } = req.query;
-    console.log('breach', email, keys.hibp_api_key);
+    console.log('breach', email, config.hibp_api_key);
     axios
       .get(
         `https://haveibeenpwned.com/api/v3/breachedaccount/${encodeURIComponent(
           email
         )}`,
-        { headers: { 'hibp-api-key': keys.hibp_api_key } }
+        { headers: { 'hibp-api-key': config.hibp_api_key } }
       )
       .then(
         resp => {
@@ -169,7 +169,7 @@ module.exports = app => {
     );
     axios
       .get(`https://api.pwnedpasswords.com/range/${pass.slice(0, 5)}`, {
-        headers: { 'hibp-api-key': keys.hibp_api_key },
+        headers: { 'hibp-api-key': config.hibp_api_key },
       })
       .then(
         resp => {
