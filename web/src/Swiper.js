@@ -129,7 +129,7 @@ function Swiper({ history }) {
       cards.length === Object.keys(resultsRef.current).length &&
       !splash.show
     ) {
-      history.push('/messenger-splash');
+      history.push('/phishing-splash');
     }
   });
 
