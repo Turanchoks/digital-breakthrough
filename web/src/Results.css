@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Alegreya+Sans&display=swap');
 
+#root {
+  overflow-y: scroll;
+  height: 100vh;
+}
+
 .results {
   background: #2c95ff;
   min-height: 100vh;
