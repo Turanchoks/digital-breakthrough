@@ -12,8 +12,8 @@ import {
   Modal,
   Header,
   Divider,
-} from "semantic-ui-react";
-import sha1 from "js-sha1";
+} from 'semantic-ui-react';
+import sha1 from 'js-sha1';
 
 import './RegForm.css';
 
@@ -57,17 +57,17 @@ const RegistrationFormStart = ({ submit }) => {
   return (
     <Form
       style={{
-        display: "flex",
-        flexDirection: "column",
+        display: 'flex',
+        flexDirection: 'column',
         width: '100%',
       }}
     >
       <Image
-        src='/avatar.png'
+        src="/avatar.png"
         size="small"
         circular
         style={{
-          margin: "0 auto 20px",
+          margin: '0 auto 20px',
           width: '100px',
           height: '100px',
         }}
@@ -120,7 +120,7 @@ const RegistrationFormStart = ({ submit }) => {
               }}
               style={{
                 color: '#000',
-                opacity: .3,
+                opacity: 0.3,
                 marginLeft: '3px',
                 fontSize: '10px',
               }}
@@ -205,48 +205,76 @@ const RegistrationFormEnd = props => {
     <div
       style={{
         width: 300,
-        display: "flex",
-        flexDirection: "column",
+        display: 'flex',
+        flexDirection: 'column',
         padding: '0 20px',
       }}
     >
       <Image
-        src='/avatar-pirate.png'
+        src="/avatar-pirate.png"
         size="small"
         circular
         style={{
-          margin: "0 auto 20px",
+          margin: '0 auto 20px',
           width: '100px',
           height: '100px',
         }}
       />
-      <List style={{
-        color: '#000',
-      }}>
-        {(emailBreached || passLeaked) ? (
-          <List.Item style={{ display: 'flex', alignItems: 'center', marginBottom: '25px' }}>
-            <List.Icon style={{ fontSize: '34px', lineHeight: '34px', color: '#D24027'  }} name="exclamation circle" />
+      <List
+        style={{
+          color: '#000',
+        }}
+      >
+        {emailBreached || passLeaked ? (
+          <List.Item
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginBottom: '25px',
+            }}
+          >
+            <List.Icon
+              style={{ fontSize: '34px', lineHeight: '34px', color: '#D24027' }}
+              name="exclamation circle"
+            />
             <List.Content style={{ textAlign: 'left' }}>
-              Согласно{" "}
-              <a target="_blank" href="https://haveibeenpwned.com">haveibeenpwned.com</a> ваши
-              авторизационные данные находятся в публичном доступе
+              Согласно{' '}
+              <a target="_blank" href="https://haveibeenpwned.com">
+                haveibeenpwned.com
+              </a>{' '}
+              ваши авторизационные данные находятся в публичном доступе
               <p style={{ fontWeight: 'bold', color: '#2C95FF' }}>
                 Рекомендуем вам сменить пароль
               </p>
             </List.Content>
           </List.Item>
-        ) : 
-        <List.Item style={{ display: 'flex', alignItems: 'center', marginBottom: '25px' }}>
-          <List.Icon style={{ fontSize: '34px', lineHeight: '34px', color: '#00C9C8' }} name="check circle" />
-          <List.Content style={{ textAlign: 'left' }}>
-            Мы проверили ваши данные по базам{" "}
-            <a target="_blank" href="https://haveibeenpwned.com">haveibeenpwned.com</a>. Все в порядке.
-          </List.Content>
-        </List.Item>
-        }
+        ) : (
+          <List.Item
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginBottom: '25px',
+            }}
+          >
+            <List.Icon
+              style={{ fontSize: '34px', lineHeight: '34px', color: '#00C9C8' }}
+              name="check circle"
+            />
+            <List.Content style={{ textAlign: 'left' }}>
+              Мы проверили ваши данные по базам{' '}
+              <a target="_blank" href="https://haveibeenpwned.com">
+                haveibeenpwned.com
+              </a>
+              . Все в порядке.
+            </List.Content>
+          </List.Item>
+        )}
         {rulesNotRead ? (
-          <List.Item style={{ display: 'flex', alignItems: 'center', }}>
-            <List.Icon style={{ fontSize: '34px', lineHeight: '34px', color: '#D24027' }} name="exclamation circle"/>
+          <List.Item style={{ display: 'flex', alignItems: 'center' }}>
+            <List.Icon
+              style={{ fontSize: '34px', lineHeight: '34px', color: '#D24027' }}
+              name="exclamation circle"
+            />
             <List.Content style={{ textAlign: 'left' }}>
               Вы согласились с правилами, которые не прочитали
               <p style={{ fontWeight: 'bold', color: '#2C95FF' }}>
@@ -254,17 +282,23 @@ const RegistrationFormEnd = props => {
               </p>
             </List.Content>
           </List.Item>
-        ) 
-        : (
-          <List.Item style={{ display: 'flex', alignItems: 'center', }}>
-            <List.Icon style={{ fontSize: '34px', lineHeight: '34px', color: '#00C9C8' }} name="check circle"/>
+        ) : (
+          <List.Item style={{ display: 'flex', alignItems: 'center' }}>
+            <List.Icon
+              style={{ fontSize: '34px', lineHeight: '34px', color: '#00C9C8' }}
+              name="check circle"
+            />
             <List.Content style={{ textAlign: 'left' }}>
-              Молодец! Вы прочитали правила сайта, относитесь к этому внимательно
+              Молодец! Вы прочитали правила сайта, относитесь к этому
+              внимательно
             </List.Content>
           </List.Item>
         )}
       </List>
-      <Link className="ui positive button registration-form__next" to="/swiper-splash">
+      <Link
+        className="ui positive button registration-form__next"
+        to="/swiper-splash"
+      >
         Далее
       </Link>
     </div>
