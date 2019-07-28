@@ -138,7 +138,7 @@ const RegistrationFormStart = ({ submit, error }) => {
         >
           <Modal.Header>Соглашение на всё</Modal.Header>
           <Modal.Content image>
-            <Modal.Description>
+            <Modal.Description style={{ width: '100%' }}>
               <Header>Первое правило</Header>
               <Divider />
               <p>
@@ -335,21 +335,22 @@ export const RegistrationForm = () => {
           ...endProps,
           pass: endProps.sha1Pass,
         }),
-      ]).then(checkData => {
-        if (checkData) {
-          setEmailCheck(checkData[0].data);
-          setPassCheck(checkData[1].data);
-          setUser({
-            userId: checkData[2].data,
-            userPoints: 0,
-            userEmail: endProps.email,
-            userName: endProps.name,
-          });
-          setIsRegistered(true);
-          setIsFetching(false);
-        }
-      })
-      .catch(() => {
+      ])
+        .then(checkData => {
+          if (checkData) {
+            setEmailCheck(checkData[0].data);
+            setPassCheck(checkData[1].data);
+            setUser({
+              userId: checkData[2].data,
+              userPoints: 0,
+              userEmail: endProps.email,
+              userName: endProps.name,
+            });
+            setIsRegistered(true);
+            setIsFetching(false);
+          }
+        })
+        .catch(() => {
           setIsFetching(false);
           setIsError(true);
         });
