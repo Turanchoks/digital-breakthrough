@@ -10,7 +10,7 @@
     "dotenv": "^8.0.0",
     "http-proxy-middleware": "^0.19.1",
     "js-sha1": "^0.6.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-lottie": "^1.2.3",
